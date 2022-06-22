@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Carousel Start-->
+    <div class="container-fluid p-0 pb-5 mb-5">
+        <div id="header-carousel" class="carousel slide carousel-fade" data-ride="carousel">
+            <ol class="carousel-indicators">
+                {% for oc in online_courses %}
+                <li data-target="#header-carousel" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %} class="active" {% endif %}></li>
+                {% endfor %}
+            </ol>
+            <div class="carousel-inner">
+                {% for oc in online_courses %}
+                <div class="carousel-item {% if forloop.first %} active {% endif %}" style="min-height: 300px;">
+                    <img class="position-relative w-100" src="/media/{{ oc.logo }}" style="min-height: 300px; object-fit: cover;">
+                    <div class="carousel-caption d-flex align-items-center justify-content-center">
+                        <div class="p-5" style="width: 100%; max-width: 900px;">
+                            <h5 class="text-white text-uppercase mb-md-3"> BEST ONLINE COURSES </h5>
+                            <h1 class="display-3 text-white mb-md-4"> {{ oc.title }} </h1>
+                            <a href="/courses" class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold mt-2">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Carousel End -->
+<!-- About Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                {% for about in abouts %}
+                <div class="col-lg-5">
+                    <img class="img-fluid rounded mb-4 mb-lg-0" src="/media/{{ about.logo }}" alt="">
+                </div>
+                <div class="col-lg-7">
+                    <div class="text-left mb-4">
+                        <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">About Us</h5>
+                        <h1>{{ about.title }}n</h1>
+                    </div>
+                    <p>{{ about.description }}</p>
+                    <a href="/about" class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold mt-2">Learn More</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+<!-- Category Start -->
+    <div class="container-fluid py-5">
+        <div class="container pt-5 pb-3">
+            <div class="text-center mb-5">
+                <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Subjects</h5>
+                <h1>Explore Top Subjects</h1>
+            </div>
+            <div class="row">
+                {% for cat in category %}
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="cat-item position-relative overflow-hidden rounded mb-2">
+                        <img class="img-fluid" src="/media/{{ cat.logo }}" alt="">
+                        <a class="cat-overlay text-white text-decoration-none" href="/blog/?category_id={{ cat.id }}">
+                            <h4 class="text-white font-weight-medium">{{ cat.title }}</h4>
+                            <span>{{ cat.count_courses }}</span>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Category Start -->
+    <!-- Courses Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Courses</h5>
+                <h1>Our Popular Courses</h1>
+            </div>
+            <div class="row">
+                {% for cour in courses %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="rounded overflow-hidden mb-2">
+                        <img class="img-fluid" src="/media/{{ cour.logo }}" alt="">
+                        <div class="bg-secondary p-4">
+                            <div class="d-flex justify-content-between mb-3">
+                                <small class="m-0"><i class="fa fa-users text-primary mr-2"></i>{{ cour.count_students }}</small>
+                                <small class="m-0"><i class="far fa-clock text-primary mr-2"></i>{{ cour.hours_int }}h {{ cour.minutes_int }}m</small>
+                            </div>
+                            <a class="h5" href="/blog/?category_id={{ cour.id }}">{{ cour.title }}</a>
+                            <div class="border-top mt-4 pt-4">
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="m-0"><i class="fa fa-star text-primary mr-2"></i> {{ cour.rating }} <small>({{ cour.comments_count }})</small></h6>
+                                    <h5 class="m-0">${{ cour.price }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Courses End -->
+<!-- Registration Start -->
+    <div class="container-fluid bg-registration py-5" style="margin: 90px 0;">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                {% for reg in abouts %}
+                <div class="col-lg-7 mb-5 mb-lg-0">
+                    <div class="mb-4">
+                        <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Need Any Courses</h5>
+                        <h1 class="text-white">{{ reg.percent }}% Off For New Students</h1>
+                    </div>
+                    <p class="text-white">{{ reg.short_description }}</p>
+                    <ul class="list-inline text-white m-0">
+                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>{{ reg.info1 }}</li>
+                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>{{ reg.info2 }}</li>
+                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>{{ reg.info3 }}</li>
+                    </ul>
+                </div>
+                {% endfor %}
+                <div class="col-lg-5">
+                    <div class="card border-0">
+                        <div class="card-header bg-light text-center p-4">
+                            <h1 class="m-0">Sign Up Now</h1>
+                        </div>
+                        <div class="card-body rounded-bottom bg-primary p-5">
+                            <form method="POST" action="/" id="form2">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="sighUpNow">
+                                <div class="form-group">
+                                    <input type="text" class="form-control border-0 p-4" name="name" id="name" placeholder="Your name" required="required" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control border-0 p-4" name="email" id="email" placeholder="Your email" required="required" />
+                                </div>
+                                <div class="form-group">
+                                    <select class="custom-select border-0 px-4" style="height: 47px;" id="category" name="category">
+                                        <option value="0" selected>Select a course</option>
+                                        {% for cor in courses %}
+                                        <option value="{{cor.id}}">{{ cor.title }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div>
+                                    <button class="btn btn-dark btn-block border-0 py-3" type="submit">Sign Up Now</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Registration End -->
+<!-- Team Start -->
+    <div class="container-fluid py-5">
+        <div class="container pt-5 pb-3">
+            <div class="text-center mb-5">
+                <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Teachers</h5>
+                <h1>Meet Our Teachers</h1>
+            </div>
+            <div class="row">
+                {% for teacher in teachers %}
+                <div class="col-md-6 col-lg-3 text-center team mb-4">
+                    <div class="team-item rounded overflow-hidden mb-2">
+                        <div class="team-img position-relative">
+                            <img class="img-fluid" src="/media/{{ teacher.logo }}" alt="">
+                            <div class="team-social">
+                                {% if teacher.twitter %}
+                                <a class="btn btn-outline-light btn-square mx-1" href="{{ teacher.twitter }}" target="_blank"><i class="fab fa-twitter"></i></a>
+                                {% endif %}
+                                {% if teacher.facebook %}
+                                <a class="btn btn-outline-light btn-square mx-1" href="{{ teacher.facebook }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                                {% endif %}
+                                {% if teacher.linkedIn %}
+                                <a class="btn btn-outline-light btn-square mx-1" href="{{ teacher.linkedIn }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                {% endif %}
+                                {% if teacher.instagram %}
+                                <a class="btn btn-outline-light btn-square mx-1" href="https://www.instagram.com/{{ teacher.instagram }}" target="_blank"><i class="fab fa-instagram"></i></a>
+                                {% endif %}
+                                {% if teacher.whatsapp %}
+                                <a class="btn btn-outline-light btn-square mx-1" href="{{ teacher.whatsapp }}" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                                {% endif %}
+                                {% if teacher.telegram %}
+                                <a class="btn btn-outline-light btn-square mx-1" href="{{ teacher.telegram }}" target="_blank"><i class="fab fa-telegram"></i></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="bg-secondary p-4">
+                            <h5>{{ teacher.title }}</h5>
+                            <a href="/blog/?category_id={{ teacher.profession_foreign.id }}"><p class="m-0">{{ teacher.profession_foreign.title }}</p></a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Team End -->
+    <!-- Testimonial Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Testimonial</h5>
+                <h1>What Say Our Students</h1>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="owl-carousel testimonial-carousel">
+                    {% for feed_back in feed_backs %}
+                        <div class="text-center">
+                            <i class="fa fa-3x fa-quote-left text-primary mb-4"></i>
+                            <h4 class="font-weight-normal mb-4">{{ feed_back.text }}</h4>
+                            <img class="img-fluid mx-auto mb-3" src="/media/{{ feed_back.logo }}" alt="">
+                            <h5 class="m-0">{{ feed_back.name }}</h5>
+                            <span>{{ feed_back.profession }}</span>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Testimonial End -->
+<!-- Blog Start -->
+    <div class="container-fluid py-5">
+        <div class="container pt-5 pb-3">
+            <div class="text-center mb-5">
+                <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Our Blog</h5>
+                <h1>Latest From Our Blog</h1>
+            </div>
+            <div class="row pb-3">
+                {% for blog in blogs %}
+                <div class="col-lg-4 mb-4">
+                    <div class="blog-item position-relative overflow-hidden rounded mb-2">
+                        <img class="img-fluid" src="/media/{{ blog.logo1 }}" alt="">
+                        <a class="blog-overlay text-decoration-none" href="/blog/{{ blog.id }}/">
+                            <h5 class="text-white mb-3">{{ blog.post_name }}</h5>
+                            <p class="text-primary m-0">{{ blog.data }}</p>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Blog End -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $("#form2").submit(function (e) {
+        e.preventDefault();
+        var serializedData = $(this).serialize();
+         $.ajax({
+             type: 'POST',
+             dataType: 'json',
+             url: $("#form2").attr("action"),
+             data: serializedData,
+             success: function (d) {
+                 if(d['status']==true){
+                     alert("Your course add!!")
+                     location.reload()
+                 }else{
+                     alert(d['errors'])
+                 }
+             },
+             error: function (d){
+                 alert("Error!!!")
+             }
+         });
+    });
+    $('.js-home-active').addClass('active');
+</script>
+
+
+{% endblock %}

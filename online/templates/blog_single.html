@@ -1,0 +1,140 @@
+{% extends 'base.html ' %}
+{% block content %}
+    <!-- Header Start -->
+    <div class="container-fluid page-header" style="margin-bottom: 90px;">
+        <div class="container">
+            <div class="d-flex flex-column justify-content-center" style="min-height: 300px">
+                <h3 class="display-4 text-white text-uppercase">Single</h3>
+                <div class="d-inline-flex text-white">
+                    <p class="m-0 text-uppercase"><a class="text-white" href="/">Home</a></p>
+                    <i class="fa fa-angle-double-right pt-1 px-3"></i>
+                    <p class="m-0 text-uppercase">Single</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+    <!-- Detail Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="mb-5">
+                        <h6 class="text-primary mb-3">{{ post.data }}</h6>
+                        <h1 class="mb-5">{{ post.post_name }}</h1>
+                        <img class="img-fluid rounded w-100 mb-4" src="/media/{{ post.logo1 }}" alt="Image">
+                        <p>{{ post.info1 }}</p>
+                        <p>{{ post.info2 }}</p>
+                        <h2 class="mb-4">{{ post.plus_post_name }}</h2>
+                        <img class="img-fluid rounded w-50 float-left mr-4 mb-3" src="/media/{{ post.logo2 }}" alt="Image">
+                        <p>{{ post.info3 }}</p>
+                        <p>{{ post.info4 }}</p>
+                    </div>
+
+                    <!-- Comment List -->
+                    <div class="mb-5">
+                        <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">{{ comment_len }} Comments</h3>
+                        {% for comment in comments %}
+                        <div class="media mb-4">
+                            <img src="/media/{{ comment.logo }}" alt="Image" class="img-fluid rounded-circle mr-3 mt-1"
+                                style="width: 45px;">
+                            <div class="media-body">
+                                <h6>{{ comment.name }} <small><i>{{ comment.data }}</i></small></h6>
+                                <p>{{ comment.text }}</p>
+                                <button class="btn btn-sm btn-secondary">Reply</button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Comment Form -->
+                    <div class="bg-secondary rounded p-5">
+                        <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">Leave a comment</h3>
+                        <form method="POST" action="/blog/{{ post.id }}/" id="form1">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="name">Name *</label>
+                                <input type="text" name="name" class="form-control border-0" id="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" name="email" class="form-control border-0" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="website">Website</label>
+                                <input type="url" name="website" class="form-control border-0" id="website">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message">Message *</label>
+                                <textarea id="message" name="description" cols="30" rows="5" class="form-control border-0"></textarea>
+                            </div>
+                            <div class="form-group mb-0">
+                                <input type="submit" value="Leave Comment" class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mt-5 mt-lg-0">
+                    <!-- Author Bio -->
+                    <div class="d-flex flex-column text-center bg-dark rounded mb-5 py-5 px-4">
+                        <img src="/media/{{ post.logo_author }}" class="img-fluid rounded-circle mx-auto mb-3" style="width: 100px;">
+                        <h3 class="text-primary mb-3">{{ post.author_name }}</h3>
+                        <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">Tag Cloud</h3>
+                        <p class="text-white m-0">{{ post.author_text }}</p>
+                    </div>
+
+                    <!-- Search Form -->
+
+                    <!-- Category List -->
+                    <div class="mb-5">
+                        <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">Categories</h3>
+                        <ul class="list-group list-group-flush">
+                            {% for cate in category %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                <a href="/blog/?category_id={{ cate.id }}" class="text-decoration-none h6 m-0">{{ cate.title }}</a>
+                                <span class="badge badge-primary badge-pill"></span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <!-- Recent Post -->
+
+                    <!-- Tag Cloud -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Detail End -->
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $("#form1").submit(function (e) {
+        e.preventDefault();
+        var serializedData = $(this).serialize();
+         $.ajax({
+             type: 'POST',
+             dataType: 'json',
+             url: $("#form1").attr("action"),
+             data: serializedData,
+             success: function (d) {
+                 if(d['status']==true){
+                     alert("Your comment add!!!")
+                     location.reload()
+                 }else{
+                     alert(d['errors'])
+                 }
+             },
+             error: function (d){
+                 alert("errors")
+             }
+         });
+    });
+    $('.js-blog-active').addClass('active');
+</script>
+
+{% endblock %}
