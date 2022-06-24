@@ -29,7 +29,7 @@
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="cat-item position-relative overflow-hidden rounded mb-2">
                         <img class="img-fluid" src="/media/{{ cate.logo }}" alt="">
-                        <a class="cat-overlay text-white text-decoration-none" href="/blog/?category_id={{ cate.id }}">
+                        <a class="cat-overlay text-white text-decoration-none" href="/blog/?category_id={{ cate.id }}#BLOG">
                             <h4 class="text-white font-weight-medium">{{ cate.title }}</h4>
                             <span>{{ cate.count_courses }}</span>
                         </a>
@@ -59,7 +59,7 @@
                                 <small class="m-0"><i class="fa fa-users text-primary mr-2"></i>{{ cour.count_students }}</small>
                                 <small class="m-0"><i class="far fa-clock text-primary mr-2"></i>{{ cour.hours_int }}h {{ cour.minutes_int }}m</small>
                             </div>
-                            <a class="h5" href="/blog/?category_id={{ cour.id }}">{{ cour.title }}</a>
+                            <a class="h5" href="/blog/?category_id={{ cour.id }}#BLOG">{{ cour.title }}</a>
                             <div class="border-top mt-4 pt-4">
                                 <div class="d-flex justify-content-between">
                                     <h6 class="m-0"><i class="fa fa-star text-primary mr-2"></i>{{ cour.rating }} <small>({{ cour.reviews }})</small></h6>

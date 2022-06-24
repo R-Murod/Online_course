@@ -100,3 +100,10 @@ class FeedBackMessageAdmin(admin.ModelAdmin):
 
 
 admin.site.register(FeedBackMessage, FeedBackMessageAdmin)
+
+
+class PostCommentAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(PostComment, PostCommentAdmin)

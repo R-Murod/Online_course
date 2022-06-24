@@ -87,7 +87,7 @@
                             </div>
                         </div>
                         {% for i in popular %}
-                            <a href="/blog/?category_id={{ i.id }}" class="nav-item nav-link">{{ i.title }}</a>
+                            <a href="/blog/?category_id={{ i.id }}#BLOG" class="nav-item nav-link">{{ i.title }}</a>
                         {% endfor %}
                     </div>
                 </nav>
@@ -132,7 +132,7 @@
                         {% for cat in contact %}
                         <p><i class="fa fa-map-marker-alt mr-2"></i>{{ cat.address }}</p>
                         <p><i class="fa fa-phone-alt mr-2"></i>{{ cat.phone }}</p>
-                        <p><i class="fa fa-envelope mr-2"></i>{{ cat.email }}</p>
+                        <a href=""><p><i class="fa fa-envelope mr-2"></i>{{ cat.email }}</p></a>
                         <div class="d-flex justify-content-start mt-4">
                             {% if cat.twitter %}
                             <a class="btn btn-outline-light btn-square mr-2" href="{{ cat.twitter }}" target="_blank"><i class="fab fa-twitter"></i></a>
@@ -153,7 +153,7 @@
                         <h5 class="text-primary text-uppercase mb-4" style="letter-spacing: 5px;">Our Courses</h5>
                         <div class="d-flex flex-column justify-content-start">
                             {% for i in popular %}
-                            <a class="text-white mb-2" href="/blog/?category_id={{ i.id }}"><i class="fa fa-angle-right mr-2"></i>{{ i.title }}</a>
+                            <a class="text-white mb-2" href="/blog/?category_id={{ i.id }}#BLOG"><i class="fa fa-angle-right mr-2"></i>{{ i.title }}</a>
                             {% endfor %}
                         </div>
                     </div>

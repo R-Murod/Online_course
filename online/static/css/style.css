@@ -5197,6 +5197,10 @@ a.badge-dark:focus, a.badge-dark.focus {
   flex: 1;
 }
 
+.media-body {
+  flex: 1;
+}
+
 .list-group {
   display: flex;
   flex-direction: column;
@@ -7682,6 +7686,7 @@ button.bg-dark:focus {
 .my-4 {
   margin-top: 1.5rem !important;
 }
+
 
 .mr-4,
 .mx-4 {

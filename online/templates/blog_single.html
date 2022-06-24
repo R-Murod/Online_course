@@ -30,29 +30,45 @@
                         <p>{{ post.info3 }}</p>
                         <p>{{ post.info4 }}</p>
                     </div>
-
                     <!-- Comment List -->
-                    <div class="mb-5">
+                    <div class="mb-5" id="#ANSWER">
                         <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">{{ comment_len }} Comments</h3>
                         {% for comment in comments %}
+                        {% if comment.comment_id == 0 %}
                         <div class="media mb-4">
-                            <img src="/media/{{ comment.logo }}" alt="Image" class="img-fluid rounded-circle mr-3 mt-1"
-                                style="width: 45px;">
+<!--                            <img src="/media/{{ com.logo }}" alt="Image" class="img-fluid rounded-circle mr-3 mt-1"-->
+<!--                                style="width: 45px;">-->
                             <div class="media-body">
                                 <h6>{{ comment.name }} <small><i>{{ comment.data }}</i></small></h6>
                                 <p>{{ comment.text }}</p>
-                                <button class="btn btn-sm btn-secondary">Reply</button>
+                                <a href="#COMMENT_FORM" onclick="salom({{ comment.id }})"><button class="btn btn-sm btn-secondary">Reply</button></a>
                             </div>
                         </div>
+                        {% for comments_answer in comments_answers %}
+                        {% if comments_answer.comment_id == comment.id %}
+                        <div class="media mb-4 ml-4 pl-4">
+<!--                            <img src="/media/{{ com.logo }}" alt="Image" class="img-fluid rounded-circle mr-3 mt-1"-->
+<!--                                style="width: 45px;">-->
+                            <div class="media-body">
+                                <h6>{{ comments_answer.name }} <small><i>{{ comments_answer.data }}</i></small></h6>
+                                <p>{{ comments_answer.text }}</p>
+                                <a href="#COMMENT_FORM" onclick="salom({{ comment.id }})"><button class="btn btn-sm btn-secondary">Reply</button></a>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% endif %}
                         {% endfor %}
                     </div>
 
                     <!-- Comment Form -->
-                    <div class="bg-secondary rounded p-5">
+                    <div class="bg-secondary rounded p-5" id="COMMENT_FORM">
                         <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">Leave a comment</h3>
                         <form method="POST" action="/blog/{{ post.id }}/" id="form1">
                             {% csrf_token %}
                             <div class="form-group">
+                                <input type="hidden" id="COMMENT_ID" name="comment_id" value="0">
                                 <label for="name">Name *</label>
                                 <input type="text" name="name" class="form-control border-0" id="name">
                             </div>
@@ -61,7 +77,7 @@
                                 <input type="email" name="email" class="form-control border-0" id="email">
                             </div>
                             <div class="form-group">
-                                <label for="website">Website</label>
+                                <label for="website">Website *</label>
                                 <input type="url" name="website" class="form-control border-0" id="website">
                             </div>
 
@@ -70,7 +86,7 @@
                                 <textarea id="message" name="description" cols="30" rows="5" class="form-control border-0"></textarea>
                             </div>
                             <div class="form-group mb-0">
-                                <input type="submit" value="Leave Comment" class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold">
+                                <a href="#ANSWER"><input type="submit" value="Leave Comment" class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold"></a>
                             </div>
                         </form>
                     </div>
@@ -91,26 +107,42 @@
                     <div class="mb-5">
                         <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">Categories</h3>
                         <ul class="list-group list-group-flush">
-                            {% for cate in category %}
+                            {% for cate in new_categories %}
                             <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <a href="/blog/?category_id={{ cate.id }}" class="text-decoration-none h6 m-0">{{ cate.title }}</a>
-                                <span class="badge badge-primary badge-pill"></span>
+                                <a href="/blog/?category_id={{ cate.id }}#BLOG" class="text-decoration-none h6 m-0">{{ cate.title }}</a>
+                                <span class="badge badge-primary badge-pill">{{ cate.count }}</span>
                             </li>
                             {% endfor %}
                         </ul>
                     </div>
-
                     <!-- Recent Post -->
+                    <div class="mb-5">
+                        <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">Recent Post</h3>
+                            {% for i in recent_post %}
+                        <a class="d-flex align-items-center text-decoration-none mb-3" href="/blog/{{ i.id }}">
+                            <img class="img-fluid rounded" src="/media/{{ i.logo_recent }}" alt="">
+                            <div class="pl-3">
+                                <h6 class="m-1">{{ i.post_name }}</h6>
+                                <small>{{ i.data }}</small>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
 
                     <!-- Tag Cloud -->
+                    <div class="mb-5">
+                        <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">Tag Cloud</h3>
+                        <div class="d-flex flex-wrap m-n1">
+                            {% for j in popular %}
+                                <a href="/blog/?category_id={{ j.id }}#BLOG" class="btn btn-outline-primary m-1">{{ j.title }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- Detail End -->
-
-
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $("#form1").submit(function (e) {
@@ -136,5 +168,11 @@
     });
     $('.js-blog-active').addClass('active');
 </script>
+<script>
+	function salom(soz){
+		document.getElementById('COMMENT_ID').value = soz;
+		return false;
+	}
 
+</script>
 {% endblock %}

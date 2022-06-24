@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from datetime import datetime
 from django.http.response import JsonResponse
-
+import smtplib as smtp
 # Create your views here.
 from main.models import *
 
@@ -12,7 +12,7 @@ def indexHandler(request):
     abouts = AboutUs.objects.all()
     category = Category.objects.all()
     courses = Courses.objects.all()
-    #teachers = Teachers.objects.order_by('-level')
+    # teachers = Teachers.objects.order_by('-level')
     feed_backs = FeedBack.objects.all()
     popular = Category.objects.filter(popular=True)
     name = request.POST.get('name', '')
@@ -46,11 +46,11 @@ def indexHandler(request):
             else:
                 errors.append("NAME_NOT_FOUND")
             if email:
-                re_email = SignUpForCourse.objects.filter(email=email)
-                if re_email:
-                    errors.append("THIS_EMAIL_IS_ALREADY_REGISTERED!!!")
-                else:
-                    sign.email = email
+                # re_email = SignUpForCourse.objects.filter(email=email)
+                # if re_email:
+                #     errors.append("THIS_EMAIL_IS_ALREADY_REGISTERED!!!")
+                # else:
+                sign.email = email
             else:
                 errors.append("EMAIL_NOT_FOUND")
             if cat:
@@ -59,6 +59,35 @@ def indexHandler(request):
                 errors.append("CATEGORY_NOT_FOUND")
             if not errors:
                 sign.save()
+
+                email = 'u5ad44in@yandex.ru'
+                password = '010100Aa#'
+                dest_email = ['m_mirzafar@mail.ru']
+
+                subject = '****'
+                email_text = f'description: {sign.name}\n email: {sign.email} '
+
+                message = 'From: {}\nSubject: {}\n\n{}'.format(email, subject, email_text)
+
+                server = smtp.SMTP_SSL('smtp.yandex.com')
+                server.set_debuglevel(1)
+                server.ehlo(email)
+                server.login(email, password)
+                server.sendmail(email, dest_email, message)
+                server.quit()
+
+                subject = 'ECOURSES'
+                email_text = f'Vasha zayavka na etot kurs prinito!!!'
+
+                message = 'From: {}\nSubject: {}\n\n{}'.format(email, subject, email_text)
+
+                server = smtp.SMTP_SSL('smtp.yandex.com')
+                server.set_debuglevel(1)
+                server.ehlo(email)
+                server.login(email, password)
+                server.sendmail(email, [sign.email], message)
+                server.quit()
+
                 response = JsonResponse({'status': True}, status=200)
             else:
                 response = JsonResponse({'status': False, 'errors': errors}, status=200)
@@ -161,7 +190,7 @@ def coursesHandler(request):
 
 def teacherHandler(request):
     contact = Contact.objects.all()
-    #teachers = Teachers.objects.all().order_by('is_main')[::-1]
+    # teachers = Teachers.objects.all().order_by('is_main')[::-1]
     popular = Category.objects.filter(popular=True)
     blogs_subjects = Blog.objects.filter(is_main=True).order_by('data')
 
@@ -189,6 +218,15 @@ def blogHandler(request):
     popular = Category.objects.filter(popular=True)
     recent_post = Blog.objects.all().order_by('data')[:3]
     blogs_subjects = Blog.objects.filter(is_main=True).order_by('data')
+
+    new_categories = []
+    for pc in category:
+        new_pc = {
+            'id': pc.id,
+            'title': pc.title,
+            'count': Blog.objects.filter(category__id=int(pc.id)).count()
+        }
+        new_categories.append(new_pc)
 
     limit = int(request.GET.get('limit', 6))
     current_page = int(request.GET.get('page', 1))
@@ -238,24 +276,37 @@ def blogHandler(request):
                    'products': blogs,
                    'total': total,
                    'blogs_subjects': blogs_subjects,
+                   'new_categories': new_categories,
                    })
 
 
 def blogsingleHandler(request, blog_id):
     contact = Contact.objects.all()
     post = Blog.objects.get(id=int(blog_id))
-    # blogs = Blog.objects.all()
     comments = Comment.objects.filter(blog__id=int(blog_id))
+    comments_answers = Comment.objects.filter(blog__id=int(blog_id))
     comment_len = len(comments)
     category = Category.objects.all()
     recent_post = Blog.objects.all().order_by('data')[:3]
     popular = Category.objects.filter(popular=True)
     blogs_subjects = Blog.objects.filter(is_main=True).order_by('data')
+    post_comments = Comment.objects.all()
+    post_comments_answers = Comment.objects.all()
 
     name = request.POST.get('name', '')
     email = request.POST.get('email', '')
     website = request.POST.get('website', '')
+    comment_id = request.POST.get('comment_id', 0)
     description = request.POST.get('description', '')
+
+    new_categories = []
+    for pc in category:
+        new_pc = {
+            'id': pc.id,
+            'title': pc.title,
+            'count': Blog.objects.filter(category__id=int(pc.id)).count()
+        }
+        new_categories.append(new_pc)
 
     errors = []
     if request.POST:
@@ -276,6 +327,7 @@ def blogsingleHandler(request, blog_id):
             com.text = description
         else:
             errors.append("TEXT_NOT_FOUND")
+        com.comment_id = comment_id
         com.blog_id = blog_id
         com.data = datetime.now()
         if not errors:
@@ -295,6 +347,10 @@ def blogsingleHandler(request, blog_id):
                    'errors': errors,
                    'popular': popular,
                    'blogs_subjects': blogs_subjects,
+                   'new_categories': new_categories,
+                   'post_comments': post_comments,
+                   'post_comments_answers': post_comments_answers,
+                   'comments_answers': comments_answers,
                    })
 
 

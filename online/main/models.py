@@ -81,6 +81,7 @@ class Comment(models.Model):
     text = models.TextField()
     data = models.DateField()
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    comment_id = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -191,3 +192,16 @@ class FeedBackMessage(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class PostComment(models.Model):
+    title = models.CharField(max_length=300)
+    logo = models.ImageField(upload_to='upload', blank=True, default='')
+    description = models.CharField(max_length=300)
+    date = models.DateTimeField()
+    comment_id = models.IntegerField(default=0)
+    email = models.CharField(default='', blank=True, max_length=300)
+    subject = models.CharField(max_length=300, blank=True, default='')
+
+    def __str__(self):
+        return self.title
